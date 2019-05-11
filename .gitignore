@@ -1,0 +1,16 @@
+# python venv files
+__pychache__/**
+bin
+include
+lib
+lib64
+Scripts
+pip-selfcheck.json
+pyvenv.cfg
+
+# pycache files
+*.pyc
+
+# files
+*.gif
+*.webm
