@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import numpy as np
+import random
 
 @dataclass
 class Drop:
@@ -23,21 +24,32 @@ class Drop:
 
 
 class DropMaker:
-    def __init__(self, dropcounter, speed):
+    '''
+    Contains array of drops with x, y position and speed value
+
+    `dropcounter`:
+        how man drops
+    `speed`:
+        y speed in meter/sec
+    `xbound=100`:
+        boundary 0-xbound X axis,
+    `ybound=100`:
+        boundary 0-ybound Y axis,
+    '''
+    def __init__(self, dropcounter, speed, xbound=100, ybound=100):
         # self.droparray = np.array(dtype=float)
         droplist = []
-        x = 0
-        y = 0
         speed = speed
         for _ in range(dropcounter):
-            drop = [x, y, speed]
+            rx = random.randint(0, xbound*100) / 100 
+            ry = random.randint(0, ybound*100) / 100 
+            drop = [rx, ry, speed]
             droplist.append(drop)
         
         self.droparray = np.array(droplist, dtype=float)
 
     def fall(self, time=1):
         for drop in self.droparray:
-        # # self.x = self.x + self.speed*time
             drop[1] = drop[1] + drop[2]*time
         # prints the first drop position of the array 
         print ( f'x:{self.droparray[0][0]:7.2f} | y:{self.droparray[0][1]:7.2f}' )
@@ -63,14 +75,15 @@ if __name__ == "__main__":
     # time
     updateintervall = 0.1
     time = 5
-    speed = 3.888888888888889 # 14 km/h
+    speed = 3.888888888888889 # 14 km/h-
     # d = Drop(0,0,3.888888888888889)
-    d = DropMaker(100000, speed)
+    d = DropMaker(100, speed)
 
     for _ in range(10*time):
         d.fall()
         sleep(updateintervall)
     
+
 
     #     d.fall(t)
     #     d.showpos()
