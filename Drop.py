@@ -48,9 +48,9 @@ class DropMaker:
         
         self.droparray = np.array(droplist, dtype=float)
 
-    def fall(self, time=1):
+    def fall(self, duration=1):
         for drop in self.droparray:
-            drop[1] = drop[1] + drop[2]*time
+            drop[1] = drop[1] + drop[2]*duration
         # prints the first drop position of the array 
         print ( f'x:{self.droparray[0][0]:7.2f} | y:{self.droparray[0][1]:7.2f}' )
 
@@ -73,15 +73,18 @@ class DropMaker:
 if __name__ == "__main__":
     from time import sleep
     # time
-    updateintervall = 0.1
-    time = 5
+    updateintervall = 0.5
+    duration = 5
     speed = 3.888888888888889 # 14 km/h-
     # d = Drop(0,0,3.888888888888889)
-    d = DropMaker(100, speed)
+    d = DropMaker(1, speed)
 
-    for _ in range(10*time):
-        d.fall()
-        sleep(updateintervall)
+    for time in range(duration):
+        print(f'time:{time:3d}')
+        # 1sec
+        for _ in range(int(1/updateintervall)):
+            d.fall()
+            sleep(updateintervall)
     
 
 
