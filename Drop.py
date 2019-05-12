@@ -163,7 +163,6 @@ if __name__ == "__main__":
     print()
 
     d = DropMakerNP(dropcounter, speed, xbound=1, ybound=1)
-    print('liter: ', d.dropvolume())
     for time in range(duration):
         print(f'time:{time:3d}')
         # 1sec
