@@ -72,16 +72,11 @@ class Simulation:
                 # sleep(updateintervall)
     
 if __name__ == "__main__":
-    # t = 0.1
-    # d = Drop(0,0,3.888888888888889)
-    # for _ in range(10):
-    #     d.fall(t)
-    #     d.showpos()
-    #     sleep(t)
-    # duration = 2
-    # dropcount = 100
-    # speed = 3.888888888888889
-    # timeit.timeit("simulate(duration, dropcount, speed)",setup="from __main__ import simulate",number=1)
-    # simulate(dropcount=1000,update=0.1, duration=10, rainspeed=10)
-    sim = Simulation(dropcount=1000,update=1, duration=10)
+
+    #---------------------------------------------
+    # to do
+    # + estimate in liter for only a square meter not full bound area
+    #
+    #---------------------------------------------
+    sim = Simulation(dropcount=5000,update=1, duration=10)
     sim.simulate()
