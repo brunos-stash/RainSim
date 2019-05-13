@@ -50,6 +50,7 @@ class Simulation:
         print('Falling Speed: ', self.rainspeed)
         print(f'(estimate)Total volume in Liter: {vtotal:.10f}')
         print(f'(estimate)Liter per sec: {vsecond:.10f}')
+        print(f'(estimate)Liter per hour: {vsecond*3600:.10f}')
 
     def simulate(self):
         time_resolution = int(np.ceil(1/self.update))
@@ -65,7 +66,8 @@ class Simulation:
                 pos = d.getpos()
                 dropsfallen = d.dropsonground
                 _, _, liter = self.dropvolume(dropsfallen, d.dropsize, d.rainspeed, ybound=d.ybound)
-                stat = f'{pos} | Drops hitting ground: {dropsfallen:7d} | Liter: {liter:.10f} | time: {final_time:3.2f}s'
+                hits = d.collider_hits
+                stat = f'{pos} | Drops hitting ground: {dropsfallen:7d} | Liter: {liter:.10f} | Hits: {hits:4d} | time: {final_time:3.2f}s'
                 print(stat)
                 # sleep(updateintervall)
     
@@ -81,5 +83,5 @@ if __name__ == "__main__":
     # speed = 3.888888888888889
     # timeit.timeit("simulate(duration, dropcount, speed)",setup="from __main__ import simulate",number=1)
     # simulate(dropcount=1000,update=0.1, duration=10, rainspeed=10)
-    sim = Simulation(dropcount=1000,update=0.1, duration=10)
+    sim = Simulation(dropcount=1000,update=1, duration=10)
     sim.simulate()

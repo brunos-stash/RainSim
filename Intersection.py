@@ -51,3 +51,18 @@ def closed_segment_intersect(a,b,c,d):
         return False
 
     return True
+
+if __name__ == "__main__":
+
+    #testcases
+    def test(a,b,c,d, explanation):
+        print(f'a: {a} | b: {b}')
+        print(f'c: {c} | d: {d}')
+        print(f'{explanation}: ',closed_segment_intersect(a,b,c,d))
+        print('')
+
+    test((1,1),(1,1),(1,1),(1,1), 'same point')
+    test((1,10),(1,10),(1,10),(1,20), 'point on vertical line')
+    test((1,1),(1,10),(1,1),(1,10), 'same line')
+    test((1,1),(1,10),(1,1),(1,100), 'line on longer vertical line')
+    test((1,1),(1,10),(2,1),(2,100), 'line parallel to longer vertical line')
