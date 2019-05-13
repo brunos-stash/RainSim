@@ -121,6 +121,7 @@ class DropMakerNP:
         self.ybound = ybound
         self.dropsize = dropsize
         self.droplist = np.empty(dropcounter, dtype=DropNP)
+        self.dropsonground = 0
         # speed * 1000 because smallest drop will be 1 mm
         speed = speed * 1000 
         for _ in range(dropcounter):
@@ -136,6 +137,7 @@ class DropMakerNP:
             drop.fall(time=time)
             if drop.y <= 0:
                 drop.y = self.ybound
+                self.countdrops()
             
     def showpos(self, dropid=0):
         '''
@@ -149,6 +151,8 @@ class DropMakerNP:
         '''
         return f'x:{self.droplist[dropid].x/1000:7.2f}m | y:{self.droplist[dropid].y/1000:7.2f}m | speed:{self.droplist[dropid].speed/1000:5.2f}m/s'
 
+    def countdrops(self):
+        self.dropsonground += 1
     
 
 if __name__ == "__main__":
