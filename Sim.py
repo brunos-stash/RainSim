@@ -1,6 +1,5 @@
-from Drop import DropMaker, DropMakerNP
+from DropMaker import DropMakerNP, np
 from time import sleep
-import numpy as np
 
 
 class Simulation:
@@ -63,7 +62,6 @@ class Simulation:
             for _ in range(time_resolution):
                 final_time += self.update
                 d.fall(time=self.update)
-                # d.showpos()
                 pos = d.getpos()
                 dropsfallen = d.dropsonground
                 _, _, liter = self.dropvolume(dropsfallen, d.dropsize, d.rainspeed, ybound=d.ybound)
