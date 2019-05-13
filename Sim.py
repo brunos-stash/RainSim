@@ -3,7 +3,7 @@ from time import sleep
 import numpy as np
 
 
-def simulate(duration=1, dropcount=100, rainspeed=3.888888888888889, update=0.1, dropsize=1):
+class Simulation:
     '''
     Simulates raindrops falling down
 
@@ -15,8 +15,22 @@ def simulate(duration=1, dropcount=100, rainspeed=3.888888888888889, update=0.1,
 
     `update`:time in seconds between updates for all raindrop positions
     '''
-    
-    def dropvolume(dropcount, dropsize, rainspeed, ybound=10000):
+
+    def __init__(self, duration=1, dropcount=100, rainspeed=3.888888888888889, update=0.1, dropsize=1):
+        self.duration=duration
+        self.dropcount=dropcount
+        self.rainspeed=rainspeed
+        self.update=update
+        self.dropsize=dropsize
+
+    def dropvolume(self, dropcount, dropsize, rainspeed, ybound=10000):
+        '''
+        Returns 3 variables:
+
+        `volume_over_full_duration`,`volume_per_second`, `volume_for_dropcount`
+
+        All are in Liter
+        '''
         # volume in millimeter³
         volume = dropsize / 2 * np.pi * 4/3
         fullvolume = volume*dropcount
@@ -24,34 +38,38 @@ def simulate(duration=1, dropcount=100, rainspeed=3.888888888888889, update=0.1,
         # milliliter = fullvolume / 1000
         ybound_m = ybound/1000
         v_per_sec = liter*rainspeed/ybound_m
-        v_total = v_per_sec*duration
+        v_total = v_per_sec*self.duration
         return v_total, v_per_sec, liter
     
-    def print_estimates():
-        vtotal, vsecond, _ = dropvolume(dropcount,dropsize,rainspeed)
-        print('Duration: ', duration)
-        print('Raindrops: ', dropcount)
-        print('Falling Speed: ', rainspeed)
+    def print_estimates(self):
+        '''
+        Prints estimates for stats
+        '''
+        vtotal, vsecond, _ = self.dropvolume(self.dropcount,self.dropsize, self.rainspeed)
+        print('Duration: ', self.duration)
+        print('Raindrops: ', self.dropcount)
+        print('Falling Speed: ', self.rainspeed)
         print(f'(estimate)Total volume in Liter: {vtotal:.10f}')
         print(f'(estimate)Liter per sec: {vsecond:.10f}')
 
-    # update = update
-    time_resolution = int(np.ceil(1/update))
-    d = DropMakerNP(dropcount, rainspeed)
-    print_estimates()
-    # 1sec
-    for time in range(duration):
-        final_time = time
-        for _ in range(time_resolution):
-            final_time += update
-            d.fall(time=update)
-            # d.showpos()
-            pos = d.getpos()
-            dropsfallen = d.dropsonground
-            _, _, liter = dropvolume(dropsfallen, dropsize, rainspeed, ybound=d.ybound)
-            stat = f'{pos} | Drops hitting ground: {dropsfallen:7d} | Liter: {liter:.10f} | time: {final_time:3.2f}s'
-            print(stat)
-            # sleep(updateintervall)
+    def simulate(self):
+        time_resolution = int(np.ceil(1/self.update))
+        d = DropMakerNP(self.dropcount, self.rainspeed)
+        self.print_estimates()
+        # 1sec
+        for time in range(self.duration):
+            final_time = time
+            # depends on update time, lower updatetime => more repetition
+            for _ in range(time_resolution):
+                final_time += self.update
+                d.fall(time=self.update)
+                # d.showpos()
+                pos = d.getpos()
+                dropsfallen = d.dropsonground
+                _, _, liter = self.dropvolume(dropsfallen, d.dropsize, d.rainspeed, ybound=d.ybound)
+                stat = f'{pos} | Drops hitting ground: {dropsfallen:7d} | Liter: {liter:.10f} | time: {final_time:3.2f}s'
+                print(stat)
+                # sleep(updateintervall)
     
 if __name__ == "__main__":
     # t = 0.1
@@ -65,4 +83,5 @@ if __name__ == "__main__":
     # speed = 3.888888888888889
     # timeit.timeit("simulate(duration, dropcount, speed)",setup="from __main__ import simulate",number=1)
     # simulate(dropcount=1000,update=0.1, duration=10, rainspeed=10)
-    simulate(dropcount=1000,update=0.1, duration=10)
+    sim = Simulation(dropcount=1000,update=0.1, duration=10)
+    sim.simulate()

@@ -116,19 +116,19 @@ class DropMakerNP:
         default is 10meter
     '''
 
-    def __init__(self, dropcounter, speed, xbound=10000, ybound=10000, dropsize=1):
+    def __init__(self, dropcounter, rainspeed, xbound=10000, ybound=10000, dropsize=1):
         self.xbound = xbound
         self.ybound = ybound
         self.dropsize = dropsize
         self.droplist = np.empty(dropcounter, dtype=DropNP)
         self.dropsonground = 0
         # speed * 1000 because smallest drop will be 1 mm
-        speed = speed * 1000 
+        self.rainspeed = rainspeed * 1000 
         for _ in range(dropcounter):
             rx = random.randint(0, xbound) 
             ry = random.randint(0, ybound)
             # 3,8 m/s =>3800 mm/s 
-            drop = DropNP(rx,ry,speed)
+            drop = DropNP(rx,ry,self.rainspeed)
             self.droplist[_] = drop
         # print(self.droplist)
         
@@ -148,6 +148,8 @@ class DropMakerNP:
     def getpos(self, dropid=0):
         '''
         returns position of the drop in `self.droplist` as string
+
+        `"x:   6.30m | y:   2.22m | speed: 3.89m/s"`
         '''
         return f'x:{self.droplist[dropid].x/1000:7.2f}m | y:{self.droplist[dropid].y/1000:7.2f}m | speed:{self.droplist[dropid].speed/1000:5.2f}m/s'
 
